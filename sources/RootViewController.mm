@@ -147,17 +147,17 @@
 #pragma mark - Document Picker Logic
 
 - (void)openDocumentPicker {
-    NSArray *types = @[
-        [UTType typeWithFilenameExtension:@"dylib"],
-        [UTType typeWithFilenameExtension:@"framework"]
-    ];
+    // ใช้ UTType String แบบดั้งเดิม เพื่อให้คอมไพล์ผ่านได้ทุก SDK
+    NSArray *types = @[@"com.apple.dynamic-library", @"com.apple.framework", @"public.data"];
     
-    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithContentTypes:types mode:UIDocumentPickerModeImport];
+    // เปลี่ยนไปใช้ initWithDocumentTypes:inMode: (รองรับ iOS 11+)
+    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:types inMode:UIDocumentPickerModeImport];
     picker.delegate = self;
     picker.allowsMultipleSelection = NO;
     
     [self presentViewController:picker animated:YES completion:nil];
 }
+
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
     NSURL *selectedFileURL = [urls firstObject];
